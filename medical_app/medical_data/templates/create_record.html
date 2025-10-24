@@ -1,0 +1,99 @@
+﻿{% extends 'medical_data/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4">Создание медицинской записи</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Куда сохранить данные?</h5>
+                </div>
+                <div class="card-body">
+                    {% for choice in form.save_location %}
+                    <div class="form-check">
+                        {{ choice.tag }}
+                        <label class="form-check-label" for="{{ choice.id_for_label }}">
+                            {{ choice.choice_label }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.patient_name.label_tag }}
+                        {{ form.patient_name }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.age.label_tag }}
+                        {{ form.age }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.gender.label_tag }}
+                        {{ form.gender }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.height.label_tag }}
+                        {{ form.height }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.weight.label_tag }}
+                        {{ form.weight }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.blood_pressure.label_tag }}
+                        {{ form.blood_pressure }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.heart_rate.label_tag }}
+                        {{ form.heart_rate }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.temperature.label_tag }}
+                        {{ form.temperature }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.symptoms.label_tag }}
+                {{ form.symptoms }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.diagnosis.label_tag }}
+                {{ form.diagnosis }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Сохранить запись</button>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

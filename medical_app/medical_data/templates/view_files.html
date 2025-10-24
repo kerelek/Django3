@@ -1,0 +1,42 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">JSON файлы на сервере</h2>
+
+{% if files %}
+<div class="row">
+    {% for file in files %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <strong>{{ file.filename }}</strong>
+                <small class="text-muted">({{ file.size }} байт)</small>
+            </div>
+            <div class="card-body">
+                <h6>Данные пациента:</h6>
+                <ul class="list-unstyled">
+                    <li><strong>Имя:</strong> {{ file.data.patient_name }}</li>
+                    <li><strong>Возраст:</strong> {{ file.data.age }} лет</li>
+                    <li>
+                        <strong>Пол:</strong>
+                        {% if file.data.gender == 'M' %}Мужской{% else %}Женский{% endif %}
+                    </li>
+                    <li><strong>Рост:</strong> {{ file.data.height }} см</li>
+                    <li><strong>Вес:</strong> {{ file.data.weight }} кг</li>
+                    <li><strong>ИМТ:</strong> {{ file.data.bmi|default:"Не указан" }}</li>
+                    <li><strong>Давление:</strong> {{ file.data.blood_pressure }}</li>
+                    <li><strong>Диагноз:</strong> {{ file.data.diagnosis }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    На сервере нет JSON файлов.
+    <a href="{% url 'create_record' %}" class="alert-link">Создайте первую запись</a>
+    или <a href="{% url 'upload_json' %}" class="alert-link">загрузите JSON файл</a>.
+</div>
+{% endif %}
+{% endblock %}

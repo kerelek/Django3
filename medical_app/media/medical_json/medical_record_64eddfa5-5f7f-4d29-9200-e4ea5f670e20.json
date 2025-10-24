@@ -1,0 +1,14 @@
+{
+  "id": "64eddfa5-5f7f-4d29-9200-e4ea5f670e20",
+  "patient_name": "Я",
+  "age": 34,
+  "gender": "M",
+  "height": 190.0,
+  "weight": 42.0,
+  "blood_pressure": "66",
+  "heart_rate": 56,
+  "temperature": 36.6,
+  "symptoms": "64",
+  "diagnosis": "6",
+  "created_at": "2025-10-24T11:18:33.595061+00:00"
+}

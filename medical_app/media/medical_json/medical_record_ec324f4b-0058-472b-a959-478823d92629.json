@@ -1,0 +1,14 @@
+{
+  "id": "ec324f4b-0058-472b-a959-478823d92629",
+  "patient_name": "Иван",
+  "age": 12,
+  "gender": "M",
+  "height": 245.0,
+  "weight": 45.0,
+  "blood_pressure": "55",
+  "heart_rate": 55,
+  "temperature": 36.6,
+  "symptoms": "5",
+  "diagnosis": "5",
+  "created_at": "2025-10-24T11:17:59.797951+00:00"
+}

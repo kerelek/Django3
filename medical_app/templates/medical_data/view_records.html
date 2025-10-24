@@ -1,0 +1,47 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Все медицинские записи</h2>
+
+{% if records %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Пациент</th>
+                <th>Возраст</th>
+                <th>Пол</th>
+                <th>Рост/Вес</th>
+                <th>ИМТ</th>
+                <th>Давление</th>
+                <th>ЧСС</th>
+                <th>Темп.</th>
+                <th>Диагноз</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.patient_name }}</td>
+                <td>{{ record.age }}</td>
+                <td>{{ record.get_gender_display }}</td>
+                <td>{{ record.height }}см / {{ record.weight }}кг</td>
+                <td>{{ record.bmi }}</td>
+                <td>{{ record.blood_pressure }}</td>
+                <td>{{ record.heart_rate }}</td>
+                <td>{{ record.temperature }}°C</td>
+                <td>{{ record.diagnosis }}</td>
+                <td>{{ record.created_at|date:"d.m.Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    Нет медицинских записей.
+    <a href="{% url 'create_record' %}" class="alert-link">Создайте первую запись</a>.
+</div>
+{% endif %}
+{% endblock %}

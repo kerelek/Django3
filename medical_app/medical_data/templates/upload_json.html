@@ -1,0 +1,44 @@
+﻿{% extends 'medical_data/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4">Загрузка JSON файла</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="{{ form.file.id_for_label }}" class="form-label">Выберите JSON файл:</label>
+                {{ form.file }}
+                {% if form.file.errors %}
+                <div class="text-danger">{{ form.file.errors }}</div>
+                {% endif %}
+                <div class="form-text">
+                    Загрузите файл в формате JSON с медицинскими данными.
+                    Обязательные поля: patient_name, age, gender, height, weight.
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success">Загрузить файл</button>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+
+        <div class="mt-4">
+            <h5>Пример структуры JSON:</h5>
+            <pre class="bg-light p-3"><code>{
+  "patient_name": "Иван Иванов",
+  "age": 35,
+  "gender": "M",
+  "height": 180.5,
+  "weight": 75.0,
+  "blood_pressure": "120/80",
+  "heart_rate": 72,
+  "temperature": 36.6,
+  "symptoms": "Головная боль, слабость",
+  "diagnosis": "Мигрень"
+}</code></pre>
+        </div>
+    </div>
+</div>
+{% endblock %}

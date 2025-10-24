@@ -1,0 +1,49 @@
+﻿{% extends 'medical_data/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <h1 class="mb-4">Система управления медицинскими данными</h1>
+        <p class="lead">Работа с медицинскими показателями в формате JSON и базе данных</p>
+
+        <div class="row mt-5">
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Создать запись</h5>
+                        <p class="card-text">Добавьте новую медицинскую запись с выбором места сохранения</p>
+                        <a href="{% url 'create_record' %}" class="btn btn-primary">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Загрузить JSON</h5>
+                        <p class="card-text">Загрузите медицинские данные из JSON файла</p>
+                        <a href="{% url 'upload_json' %}" class="btn btn-success">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Все записи</h5>
+                        <p class="card-text">Просмотр данных из базы или файлов с поиском</p>
+                        <a href="{% url 'view_records' %}" class="btn btn-info">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">JSON файлы</h5>
+                        <p class="card-text">Просмотр всех JSON файлов на сервере</p>
+                        <a href="{% url 'view_json_files' %}" class="btn btn-warning">Перейти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

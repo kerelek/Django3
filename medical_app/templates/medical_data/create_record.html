@@ -1,0 +1,113 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4">Создание медицинской записи</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.patient_name.label_tag }}
+                        {{ form.patient_name }}
+                        {% if form.patient_name.errors %}
+                        <div class="text-danger">{{ form.patient_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.age.label_tag }}
+                        {{ form.age }}
+                        {% if form.age.errors %}
+                        <div class="text-danger">{{ form.age.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.gender.label_tag }}
+                        {{ form.gender }}
+                        {% if form.gender.errors %}
+                        <div class="text-danger">{{ form.gender.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.height.label_tag }}
+                        {{ form.height }}
+                        {% if form.height.errors %}
+                        <div class="text-danger">{{ form.height.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.weight.label_tag }}
+                        {{ form.weight }}
+                        {% if form.weight.errors %}
+                        <div class="text-danger">{{ form.weight.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.blood_pressure.label_tag }}
+                        {{ form.blood_pressure }}
+                        {% if form.blood_pressure.errors %}
+                        <div class="text-danger">{{ form.blood_pressure.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.heart_rate.label_tag }}
+                        {{ form.heart_rate }}
+                        {% if form.heart_rate.errors %}
+                        <div class="text-danger">{{ form.heart_rate.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.temperature.label_tag }}
+                        {{ form.temperature }}
+                        {% if form.temperature.errors %}
+                        <div class="text-danger">{{ form.temperature.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.symptoms.label_tag }}
+                {{ form.symptoms }}
+                {% if form.symptoms.errors %}
+                <div class="text-danger">{{ form.symptoms.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.diagnosis.label_tag }}
+                {{ form.diagnosis }}
+                {% if form.diagnosis.errors %}
+                <div class="text-danger">{{ form.diagnosis.errors }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Сохранить запись</button>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

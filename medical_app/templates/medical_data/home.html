@@ -1,0 +1,40 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <h1 class="mb-4">Система управления медицинскими данными</h1>
+        <p class="lead">Работа с медицинскими показателями в формате JSON</p>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Создать запись</h5>
+                        <p class="card-text">Добавьте новую медицинскую запись через форму</p>
+                        <a href="{% url 'create_record' %}" class="btn btn-primary">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Загрузить JSON</h5>
+                        <p class="card-text">Загрузите медицинские данные из JSON файла</p>
+                        <a href="{% url 'upload_json' %}" class="btn btn-success">Перейти</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Просмотр файлов</h5>
+                        <p class="card-text">Просмотрите все JSON файлы на сервере</p>
+                        <a href="{% url 'view_json_files' %}" class="btn btn-info">Перейти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

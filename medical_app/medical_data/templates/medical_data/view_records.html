@@ -1,0 +1,197 @@
+﻿{% extends 'medical_data/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Все медицинские записи</h2>
+            <div class="btn-group">
+                <a href="{% url 'view_records' %}?source=db"
+                   class="btn btn-outline-primary {% if data_source == 'db' %}active{% endif %}">
+                    📊 Из базы данных
+                </a>
+                <a href="{% url 'view_records' %}?source=file"
+                   class="btn btn-outline-success {% if data_source == 'file' %}active{% endif %}">
+                    📁 Из JSON файлов
+                </a>
+            </div>
+        </div>
+
+        {% if data_source == 'db' %}
+        <!-- AJAX поиск для базы данных -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" id="searchInput" class="form-control"
+                               placeholder="Поиск по имени пациента, симптомам, диагнозу...">
+                    </div>
+                    <div class="col-md-4">
+                        <button id="clearSearch" class="btn btn-outline-secondary">Очистить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="searchResults"></div>
+
+        <div id="allRecords">
+            {% endif %}
+
+            {% if records %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Пациент</th>
+                            <th>Возраст</th>
+                            <th>Пол</th>
+                            <th>Рост</th>
+                            <th>Вес</th>
+                            <th>ИМТ</th>
+                            <th>Давление</th>
+                            <th>ЧСС</th>
+                            <th>Темп.</th>
+                            <th>Диагноз</th>
+                            {% if data_source == 'db' %}
+                            <th>Действия</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            {% if data_source == 'db' %}
+                            <td>{{ record.patient_name }}</td>
+                            <td>{{ record.age }}</td>
+                            <td>{{ record.get_gender_display }}</td>
+                            <td>{{ record.height }} см</td>
+                            <td>{{ record.weight }} кг</td>
+                            <td>{{ record.bmi }}</td>
+                            <td>{{ record.blood_pressure }}</td>
+                            <td>{{ record.heart_rate }}</td>
+                            <td>{{ record.temperature }}°C</td>
+                            <td>{{ record.diagnosis }}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{% url 'edit_record' record.id %}" class="btn btn-warning">✏️</a>
+                                    <a href="{% url 'delete_record' record.id %}" class="btn btn-danger">🗑️</a>
+                                </div>
+                            </td>
+                            {% else %}
+                            <td>{{ record.data.patient_name }}</td>
+                            <td>{{ record.data.age }}</td>
+                            <td>{% if record.data.gender == 'M' %}Мужской{% else %}Женский{% endif %}</td>
+                            <td>{{ record.data.height }} см</td>
+                            <td>{{ record.data.weight }} кг</td>
+                            <td>
+                                {% if record.data.height > 0 %}
+                                {% widthratio record.data.weight record.data.height record.data.height as bmi_squared %}
+                                {% widthratio bmi_squared 10000 1 as bmi %}
+                                {{ bmi|floatformat:1 }}
+                                {% else %}
+                                0
+                                {% endif %}
+                            </td>
+                            <td>{{ record.data.blood_pressure }}</td>
+                            <td>{{ record.data.heart_rate }}</td>
+                            <td>{{ record.data.temperature }}°C</td>
+                            <td>{{ record.data.diagnosis }}</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                Нет медицинских записей.
+                <a href="{% url 'create_record' %}" class="alert-link">Создайте первую запись</a>.
+            </div>
+            {% endif %}
+
+            {% if data_source == 'db' %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if data_source == 'db' %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const allRecords = document.getElementById('allRecords');
+        const clearSearch = document.getElementById('clearSearch');
+
+        let searchTimeout;
+
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                allRecords.style.display = 'block';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                fetch(`/search/?q=${encodeURIComponent(query)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        allRecords.style.display = 'none';
+
+                        if (data.results.length > 0) {
+                            let html = '<div class="table-responsive"><table class="table table-striped"><thead><tr>' +
+                                '<th>Пациент</th><th>Возраст</th><th>Пол</th><th>Рост</th><th>Вес</th><th>ИМТ</th>' +
+                                '<th>Давление</th><th>ЧСС</th><th>Темп.</th><th>Диагноз</th><th>Действия</th>' +
+                                '</tr></thead><tbody>';
+
+                            data.results.forEach(record => {
+                                html += `<tr>
+                            <td>${record.patient_name}</td>
+                            <td>${record.age}</td>
+                            <td>${record.gender}</td>
+                            <td>${record.height} см</td>
+                            <td>${record.weight} кг</td>
+                            <td>${record.bmi}</td>
+                            <td>${record.blood_pressure}</td>
+                            <td>${record.heart_rate}</td>
+                            <td>${record.temperature}°C</td>
+                            <td>${record.diagnosis}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="/edit/${record.id}/" class="btn btn-warning">✏️</a>
+                                    <a href="/delete/${record.id}/" class="btn btn-danger">🗑️</a>
+                                </div>
+                            </td>
+                        </tr>`;
+                            });
+
+                            html += '</tbody></table></div>';
+                            searchResults.innerHTML = html;
+                        } else {
+                            searchResults.innerHTML = '<div class="alert alert-warning">Ничего не найдено</div>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        searchResults.innerHTML = '<div class="alert alert-danger">Ошибка поиска</div>';
+                    });
+            }, 300);
+        });
+
+        clearSearch.addEventListener('click', function () {
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+            allRecords.style.display = 'block';
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

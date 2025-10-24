@@ -1,0 +1,12 @@
+{
+  "patient_name": "Иван Иванов",
+  "age": 35,
+  "gender": "M",
+  "height": 180.5,
+  "weight": 75.0,
+  "blood_pressure": "120/80",
+  "heart_rate": 72,
+  "temperature": 36.6,
+  "symptoms": "Головная боль, слабость",
+  "diagnosis": "Мигрень"
+}

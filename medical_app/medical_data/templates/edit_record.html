@@ -1,0 +1,90 @@
+﻿{% extends 'medical_data/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4">Редактирование записи</h2>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>Пациент: {{ record.patient_name }}</h5>
+                <p class="text-muted">ID: {{ record.id }}</p>
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.patient_name.label_tag }}
+                        {{ form.patient_name }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.age.label_tag }}
+                        {{ form.age }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.gender.label_tag }}
+                        {{ form.gender }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.height.label_tag }}
+                        {{ form.height }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.weight.label_tag }}
+                        {{ form.weight }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.blood_pressure.label_tag }}
+                        {{ form.blood_pressure }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.heart_rate.label_tag }}
+                        {{ form.heart_rate }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.temperature.label_tag }}
+                        {{ form.temperature }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.symptoms.label_tag }}
+                {{ form.symptoms }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.diagnosis.label_tag }}
+                {{ form.diagnosis }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            <a href="{% url 'view_records' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

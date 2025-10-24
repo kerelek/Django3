@@ -1,0 +1,31 @@
+﻿{% extends 'medical_data/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <h2 class="mb-4">Удаление записи</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Вы уверены, что хотите удалить эту запись?</h5>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6>Данные пациента:</h6>
+                        <p><strong>Имя:</strong> {{ record.patient_name }}</p>
+                        <p><strong>Возраст:</strong> {{ record.age }}</p>
+                        <p><strong>Пол:</strong> {{ record.get_gender_display }}</p>
+                        <p><strong>Диагноз:</strong> {{ record.diagnosis }}</p>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Да, удалить</button>
+                    <a href="{% url 'view_records' %}" class="btn btn-secondary">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

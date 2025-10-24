@@ -1,0 +1,154 @@
+﻿{% extends 'medical_data/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4">Редактирование записи</h2>
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Исправьте следующие ошибки:</strong>
+            <ul>
+                {% for field in form %}
+                {% for error in field.errors %}
+                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>Пациент: {{ record.patient_name }}</h5>
+                <p class="text-muted">ID: {{ record.id }} | Создано: {{ record.created_at }}</p>
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.patient_name.label_tag }}
+                        {{ form.patient_name }}
+                        {% if form.patient_name.errors %}
+                        <div class="text-danger small">{{ form.patient_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.age.label_tag }}
+                        {{ form.age }}
+                        {% if form.age.errors %}
+                        <div class="text-danger small">{{ form.age.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        {{ form.gender.label_tag }}
+                        {{ form.gender }}
+                        {% if form.gender.errors %}
+                        <div class="text-danger small">{{ form.gender.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.height.label_tag }}
+                        {{ form.height }}
+                        {% if form.height.errors %}
+                        <div class="text-danger small">{{ form.height.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.weight.label_tag }}
+                        {{ form.weight }}
+                        {% if form.weight.errors %}
+                        <div class="text-danger small">{{ form.weight.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.blood_pressure.label_tag }}
+                        {{ form.blood_pressure }}
+                        {% if form.blood_pressure.errors %}
+                        <div class="text-danger small">{{ form.blood_pressure.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.heart_rate.label_tag }}
+                        {{ form.heart_rate }}
+                        {% if form.heart_rate.errors %}
+                        <div class="text-danger small">{{ form.heart_rate.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        {{ form.temperature.label_tag }}
+                        {{ form.temperature }}
+                        {% if form.temperature.errors %}
+                        <div class="text-danger small">{{ form.temperature.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.symptoms.label_tag }}
+                {{ form.symptoms }}
+                {% if form.symptoms.errors %}
+                <div class="text-danger small">{{ form.symptoms.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.diagnosis.label_tag }}
+                {{ form.diagnosis }}
+                {% if form.diagnosis.errors %}
+                <div class="text-danger small">{{ form.diagnosis.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Если хочешь показывать служебные поля -->
+            {% if form.data_source %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.data_source.label_tag }}
+                        {{ form.data_source }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ form.created_at.label_tag }}
+                        {{ form.created_at }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            <a href="{% url 'view_records' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
