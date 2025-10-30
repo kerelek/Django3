@@ -39,7 +39,6 @@ def create_medical_record(request):
                 'created_at': timezone.now().isoformat()
             }
             
-            # Проверка на дубликаты для базы данных
             duplicate = None
             if save_location in ['db', 'both']:
                 duplicate = MedicalRecord.objects.filter(
@@ -55,7 +54,6 @@ def create_medical_record(request):
                 messages.warning(request, 'Такая запись уже существует в базе данных!')
                 return render(request, 'medical_data/create_record.html', {'form': form})
             
-            # Сохранение в базу данных
             db_saved = False
             if save_location in ['db', 'both'] and not duplicate:
                 try:
@@ -69,7 +67,6 @@ def create_medical_record(request):
                 except IntegrityError:
                     messages.error(request, 'Ошибка при сохранении в базу данных!')
             
-            # Сохранение в JSON файл
             file_saved = False
             if save_location in ['file', 'both']:
                 json_dir = os.path.join(settings.MEDIA_ROOT, 'medical_json')
@@ -109,7 +106,6 @@ def upload_json_file(request):
                     if field not in data:
                         raise ValueError(f"Отсутствует обязательное поле: {field}")
                 
-                # Проверка на дубликаты
                 duplicate = MedicalRecord.objects.filter(
                     patient_name=data['patient_name'],
                     age=data['age'],
@@ -126,7 +122,6 @@ def upload_json_file(request):
                 json_file.is_valid = True
                 json_file.save()
                 
-                # Сохраняем в базу данных
                 MedicalRecord.objects.create(
                     id=uuid.uuid4(),
                     patient_name=data['patient_name'],
@@ -239,7 +234,6 @@ def edit_record(request, record_id):
     if request.method == 'POST':
         form = MedicalRecordEditForm(request.POST, instance=record)
         if form.is_valid():
-            # Проверка на дубликаты (кроме текущей записи)
             duplicate = MedicalRecord.objects.filter(
                 patient_name=form.cleaned_data['patient_name'],
                 age=form.cleaned_data['age'],

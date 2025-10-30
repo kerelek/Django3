@@ -1,4 +1,3 @@
-# remove_duplicates.py
 import os
 import django
 
@@ -8,7 +7,6 @@ django.setup()
 from medical_data.models import MedicalRecord
 from django.db.models import Count
 
-# Находим дубликаты
 duplicates = MedicalRecord.objects.values(
     'patient_name', 'age', 'gender', 'height', 'weight', 'diagnosis'
 ).annotate(
@@ -20,7 +18,6 @@ print(f"Найдено групп дубликатов: {len(duplicates)}")
 for dup in duplicates:
     print(f"Дубликаты для: {dup}")
     
-    # Находим все записи с этими данными
     records = MedicalRecord.objects.filter(
         patient_name=dup['patient_name'],
         age=dup['age'],
@@ -30,7 +27,6 @@ for dup in duplicates:
         diagnosis=dup['diagnosis']
     ).order_by('created_at')
     
-    # Оставляем самую старую запись, удаляем остальные
     keep_record = records.first()
     delete_records = records.exclude(id=keep_record.id)
     

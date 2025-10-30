@@ -124,7 +124,6 @@ class MedicalRecordForm(forms.Form):
     def clean_blood_pressure(self):
         blood_pressure = self.cleaned_data['blood_pressure'].strip()
         if blood_pressure:
-            # Проверка формата давления (например: 120/80)
             if '/' not in blood_pressure:
                 raise ValidationError('Давление должно быть в формате: верхнее/нижнее (например: 120/80)')
             parts = blood_pressure.split('/')
@@ -160,7 +159,6 @@ class MedicalRecordForm(forms.Form):
         height = cleaned_data.get('height')
         weight = cleaned_data.get('weight')
         
-        # Проверка ИМТ
         if height and weight:
             bmi = weight / ((height / 100) ** 2)
             if bmi < 10:
@@ -282,10 +280,9 @@ class JSONUploadForm(forms.ModelForm):
     
     def clean_file(self):
         file = self.cleaned_data['file']
-        if file.size > 5 * 1024 * 1024:  # 5MB
+        if file.size > 5 * 1024 * 1024: 
             raise ValidationError("Файл слишком большой. Максимальный размер: 5MB")
         
-        # Проверка расширения
         if not file.name.lower().endswith('.json'):
             raise ValidationError("Разрешены только файлы с расширением .json")
         

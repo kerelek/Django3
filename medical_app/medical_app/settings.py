@@ -1,4 +1,3 @@
-# medical_app/settings.py
 import os
 from pathlib import Path
 
@@ -55,11 +54,9 @@ DATABASES = {
     }
 }
 
-# Медиа файлы
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Статические файлы
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'medical_data', 'static')]
 
